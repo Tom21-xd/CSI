@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "297583784042",
+    "project_id": "app-dengue-36c5d",
+    "storage_bucket": "app-dengue-36c5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:297583784042:android:2ebd9408597e2204759a13",
+        "android_client_info": {
+          "package_name": "com.udla.csi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEkQsP6n4F-ZQxpw1r146Tl4MBIlmqD4E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
