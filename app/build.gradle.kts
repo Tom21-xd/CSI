@@ -54,7 +54,10 @@ dependencies {
 
     val nav_version = "2.7.7"
 
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    implementation(libs.gson)
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -66,8 +69,8 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
     implementation(libs.androidx.appcompat)
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.6")
-    implementation ("androidx.compose.material:material-icons-extended:1.6.6")
+    implementation(libs.androidx.runtime.livedata)
+    implementation (libs.androidx.material.icons.extended)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
