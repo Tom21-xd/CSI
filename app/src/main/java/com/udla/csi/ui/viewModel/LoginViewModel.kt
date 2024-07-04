@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 class LoginViewModel : ViewModel() {
 
     private val  auth :FirebaseAuth =Firebase.auth
-    //private val _loading = MutableLiveData(false)
+    private val _loading = MutableLiveData(false)
 
     private val _correo = MutableLiveData<String>()
     val correo: MutableLiveData<String>
@@ -22,6 +22,10 @@ class LoginViewModel : ViewModel() {
     private val _contra = MutableLiveData<String>()
     val contra: MutableLiveData<String>
         get() = _contra
+
+    private val _log_regis = MutableLiveData<Boolean>()
+    val log_regis: MutableLiveData<Boolean>
+        get() = _log_regis
 
     private val _contravisible = MutableLiveData<Boolean>()
     val contravisible: MutableLiveData<Boolean>
@@ -35,15 +39,16 @@ class LoginViewModel : ViewModel() {
         _contravisible.value = visible
     }
 
+    private fun contravalida(contra: String): Boolean = contra.length >= 8
+
+    private fun correovalido(correo: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(correo).matches()
+
     fun onLoginChange(correo: String, contra: String) {
         _correo.value = correo
         _contra.value = contra
         _loginEnabled.value = correovalido(correo) && contravalida(contra)
     }
 
-    private fun contravalida(contra: String): Boolean = contra.length >= 8
-
-    private fun correovalido(correo: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(correo).matches()
     fun iniciosesioncorreo(correo:String,contrasenia:String,HomeScreen:() ->Unit)
     = viewModelScope.launch {
         try {
@@ -60,6 +65,23 @@ class LoginViewModel : ViewModel() {
             }
         }catch (e:Exception){
             Log.d("AppDengue","Error al iniciar sesion")
+        }
+    }
+
+    //---------------------------Registro----------------------------------------
+
+    fun registroUsuario(correo:String,contrasenia:String,HomeScreen:() ->Unit){
+        if(_loading.value== false){
+            _loading.value =true
+            auth.createUserWithEmailAndPassword(correo,contrasenia)
+                .addOnCompleteListener{
+                        task->
+                    if (task.isSuccessful){
+                        HomeScreen()
+                    }else{
+                    }
+                }
+            _loading.value =false
         }
     }
 

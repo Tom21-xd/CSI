@@ -1,5 +1,6 @@
 package com.udla.csi.ui.screen
 
+import androidx.compose.animation.AnimatedVisibility
 import com.udla.csi.ui.theme.*
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -29,11 +30,9 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.udla.csi.Navigation.Screens
-
+import com.udla.csi.ui.Navigation.Screens
 import com.udla.csi.R
-import com.udla.csi.ui.viewModel.LoginViewModel
-
+import com.udla.csi.ui.viewModel.*
 
 @Composable
 fun LoginScreen (viewModel: LoginViewModel,navController: NavController){
@@ -42,33 +41,42 @@ fun LoginScreen (viewModel: LoginViewModel,navController: NavController){
             Modifier
                 .fillMaxSize()
                 .padding(20.dp)){
-            Login(Modifier.align(Alignment.Center), viewModel,navController)
+            Row (Modifier.align(Alignment.TopCenter)){
+                Column {
+                    Text(text ="Iniciar sesión", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = Color(0xFF000000),modifier = Modifier
+                        .clickable { viewModel.log_regis.value = false }
+                        .padding(10.dp))
+                }
+                Column {
+                    Text(text = "Crear cuenta", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = Color(0xFF000000), modifier = Modifier
+                        .clickable { viewModel.log_regis.value = true }
+                        .padding(10.dp))
+                }
+            }
+            val logRegis : Boolean by viewModel.log_regis.observeAsState(initial = false)
+            AnimatedVisibility(visible = !logRegis) {
+                Login(Modifier.align(Alignment.Center), viewModel, navController)
+            }
+            AnimatedVisibility(visible = logRegis) {
+                Registro(Modifier.align(Alignment.Center), viewModel, navController)
+            }
         }
+
+
     }
 
 }
 
-
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginViewModel,navController: NavController) {
+fun Login(modifier: Modifier ,viewModel: LoginViewModel,navController: NavController) {
+
     val correo : String by viewModel.correo.observeAsState(initial = "")
     val contra : String by viewModel.contra.observeAsState(initial = "")
     val loginEneable : Boolean by viewModel.loginEnabled.observeAsState(initial = false)
     val contravisible : Boolean by viewModel.contravisible.observeAsState(initial = false)
 
     Box(modifier = modifier.fillMaxSize()){
-        Row (Modifier.align(Alignment.TopCenter)){
-            Column {
-                Text(text ="Iniciar sesión", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = Color(0xFF000000),modifier = Modifier
-                    .clickable {}
-                    .padding(10.dp))
-            }
-            Column {
-                Text(text = "Crear cuenta", fontSize = 15.sp, fontWeight = FontWeight.Bold, color = Color(0xFF000000), modifier = Modifier
-                    .clickable {}
-                    .padding(10.dp))
-            }
-        }
+
         Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
             HeaderImage(Modifier.align(Alignment.CenterHorizontally))
             Spacer(modifier = Modifier.padding(10.dp))
@@ -86,7 +94,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel,navController: NavContro
 @Composable
 fun BotonInicio(modifier: Modifier,loginEneable: Boolean,viewModel: LoginViewModel,correo:String,contra:String,navController: NavController) {
     Button(
-        onClick = {viewModel.iniciosesioncorreo(correo,contra){navController.navigate(Screens.HomeSceen.name)}},
+        onClick = {viewModel.iniciosesioncorreo(correo,contra){navController.navigate(Screens.HomeScreen.name)}},
         modifier = modifier
             .width(200.dp)
             .height(48.dp),
@@ -97,7 +105,6 @@ fun BotonInicio(modifier: Modifier,loginEneable: Boolean,viewModel: LoginViewMod
 
     }
 }
-
 
 @Composable
 fun OlvContra(modifier: Modifier) {
@@ -158,4 +165,24 @@ fun CampoCorreo(correo:String , onTextFieldChanged: (String) -> Unit) {
 @Composable
 fun HeaderImage(modifier: Modifier) {
     Image(painter = painterResource(id = R.drawable.salud ), contentDescription = "Header" ,modifier=modifier)
+}
+
+//------------------------------------------------Registro------------------------------------------------------------
+
+@Composable
+fun Registro(modifier: Modifier, viewModel:LoginViewModel, navController: NavController) {
+    Box(modifier = modifier.fillMaxSize()){
+        Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = "¿Como te llamas?", fontSize = 25.sp, fontWeight = FontWeight.Bold, color = Color(0xFF000000), modifier = Modifier
+                .clickable { viewModel.log_regis.value = true })
+
+            Row {
+
+            }
+            Row {
+
+            }
+        }
+    }
+
 }
