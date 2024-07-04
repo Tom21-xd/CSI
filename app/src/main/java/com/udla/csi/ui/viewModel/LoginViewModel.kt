@@ -91,6 +91,7 @@ class LoginViewModel : ViewModel() {
                     if (task.isSuccessful){
                         HomeScreen()
                     }else{
+                        Log.d("AppDengue","Error al registrar")
                     }
                 }
             _loading.value =false
